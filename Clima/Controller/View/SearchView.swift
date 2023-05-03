@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SearchViewDelegate: AnyObject {
+	func getCity(city: String)
+}
+
 final class SearchView: UIView {
+	
+	weak var delegate: SearchViewDelegate?
 	
 	// MARK: - Views
 	
@@ -57,7 +63,10 @@ final class SearchView: UIView {
 
 extension SearchView {
 	@objc private func searchButtonAction(_ sender: UIButton) {
-		print("Btn search")
+//		guard let city = searchTextfield.text else { return }
+		searchTextfield.endEditing(true)
+//		delegate?.getCity(city: city)
+//		searchTextfield.text = ""
 	}
 	
 	@objc private func locationButtonAction(_ sender: UIButton) {
@@ -69,8 +78,6 @@ extension SearchView {
 
 extension SearchView: UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		guard let text = searchTextfield.text else { return true }
-		print(text)
 		searchTextfield.endEditing(true)
 		return true
 	}
@@ -86,6 +93,8 @@ extension SearchView: UITextFieldDelegate {
 	}
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
+		guard let city = searchTextfield.text else { return }
+		delegate?.getCity(city: city)
 		searchTextfield.text = ""
 	}
 }

@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
 	
+	private var weatherManager = WeatherManager()
 	// MARK: - Views
 	
 	private let degreeLabel = UILabel(fontSize: 80, weight: .bold)
@@ -50,6 +52,9 @@ class WeatherViewController: UIViewController {
 		setupConstraints()
 		
 		style()
+		
+		searchView.delegate = self
+		weatherManager.delegate = self
 		
 		// Test Data
 		degreeLabel.text = "21"
@@ -98,5 +103,28 @@ extension WeatherViewController {
 			searchView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
 			searchView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
 		])
+	}
+}
+
+// MARK: - Search View Delegate
+
+extension WeatherViewController: SearchViewDelegate {
+	func getCity(city: String) {
+		weatherManager.fetchWeather(cityName: city)
+	}
+}
+
+// MARK: - Weather Manager Delegate
+
+extension WeatherViewController: WeatherManagerDelegate {
+	func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+		DispatchQueue.main.async {
+			self.degreeLabel.text = weather.temperatureString
+			self.cityLabel.text = weather.cityName
+			self.conditionsImage.image = UIImage.init(systemName: weather.conditionName)
+		}
+	}
+	func didFailWithError(error: Error) {
+		print(error)
 	}
 }
