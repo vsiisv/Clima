@@ -11,6 +11,8 @@ import CoreLocation
 class WeatherViewController: UIViewController {
 	
 	private var weatherManager = WeatherManager()
+	let locationManager = CLLocationManager()
+	
 	// MARK: - Views
 	
 	private let degreeLabel = UILabel(fontSize: 80, weight: .bold)
@@ -50,27 +52,18 @@ class WeatherViewController: UIViewController {
 		super.viewDidLoad()
 		addSubviews()
 		setupConstraints()
-		
-		style()
-		
+
 		searchView.delegate = self
 		weatherManager.delegate = self
-		
-		// Test Data
-		degreeLabel.text = "21"
-		symbolDegreeLabel.text = "°"
-		typeDegreeLabel.text = "C"
-		cityLabel.text = "London"
+		locationManager.delegate = self
+		locationManager.requestWhenInUseAuthorization()
+		locationManager.requestLocation()
 	}
 }
 
 // MARK: - Layout and add subviews
 
 extension WeatherViewController {
-	func style() {
-		
-	}
-	
 	private func addSubviews() {
 		view.addSubview(backgroundImage)
 		view.addSubview(mainStackView)
@@ -109,6 +102,10 @@ extension WeatherViewController {
 // MARK: - Search View Delegate
 
 extension WeatherViewController: SearchViewDelegate {
+	func getLocation() {
+		locationManager.requestLocation()
+	}
+	
 	func getCity(city: String) {
 		weatherManager.fetchWeather(cityName: city)
 	}
@@ -125,6 +122,23 @@ extension WeatherViewController: WeatherManagerDelegate {
 		}
 	}
 	func didFailWithError(error: Error) {
+		print(error)
+	}
+}
+
+// MARK: - CLLocation Manager Delegate
+
+extension WeatherViewController: CLLocationManagerDelegate {
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		locationManager.stopUpdatingLocation()
+		guard let location = locations.last else { return }
+		let lat = location.coordinate.latitude
+		let lon = location.coordinate.longitude
+		weatherManager.fetchWeather(latitude: lat, longitude: lon)
+		print("Latitude - \(lat), Longitude - \(lon)")
+	}
+	
+	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
 		print(error)
 	}
 }

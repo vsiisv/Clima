@@ -9,6 +9,7 @@ import UIKit
 
 protocol SearchViewDelegate: AnyObject {
 	func getCity(city: String)
+	func getLocation()
 }
 
 final class SearchView: UIView {
@@ -63,14 +64,11 @@ final class SearchView: UIView {
 
 extension SearchView {
 	@objc private func searchButtonAction(_ sender: UIButton) {
-//		guard let city = searchTextfield.text else { return }
 		searchTextfield.endEditing(true)
-//		delegate?.getCity(city: city)
-//		searchTextfield.text = ""
 	}
 	
 	@objc private func locationButtonAction(_ sender: UIButton) {
-		print("Btn location")
+		delegate?.getLocation()
 	}
 }
 
