@@ -11,7 +11,7 @@ import CoreLocation
 class WeatherViewController: UIViewController {
 	
 	private var weatherManager = WeatherManager()
-	let locationManager = CLLocationManager()
+	private let locationManager = CLLocationManager()
 	
 	// MARK: - Views
 	
@@ -25,7 +25,7 @@ class WeatherViewController: UIViewController {
 	
 	private let searchView = SearchView()
 
-	lazy var mainStackView: UIStackView =  {
+	private lazy var mainStackView: UIStackView =  {
 		let stackView = UIStackView()
 		stackView.axis = .vertical
 		stackView.alignment = .trailing
@@ -36,7 +36,7 @@ class WeatherViewController: UIViewController {
 		return stackView
 	}()
 	
-	lazy var degreeStackView: UIStackView =  {
+	private lazy var degreeStackView: UIStackView =  {
 		let stackView = UIStackView()
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
