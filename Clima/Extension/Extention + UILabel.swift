@@ -12,4 +12,10 @@ extension UILabel {
 		self.init()
 		font = UIFont.systemFont(ofSize: fontSize, weight: weight)
 	}
+	
+	convenience init(text: String, fontSize: CGFloat, weight: UIFont.Weight) {
+		self.init()
+		self.text = text
+		font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+	}
 }

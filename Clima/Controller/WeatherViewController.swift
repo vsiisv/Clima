@@ -16,8 +16,8 @@ class WeatherViewController: UIViewController {
 	// MARK: - Views
 	
 	private let degreeLabel = UILabel(fontSize: 80, weight: .bold)
-	private let symbolDegreeLabel = UILabel(fontSize: 100, weight: .light)
-	private let typeDegreeLabel = UILabel(fontSize: 100, weight: .light)
+	private let symbolDegreeLabel = UILabel(text: "°", fontSize: 100, weight: .light)
+	private let typeDegreeLabel = UILabel(text: "C", fontSize: 100, weight: .light)
 	private let cityLabel = UILabel(fontSize: 30, weight: .regular)
 	
 	private let backgroundImage = UIImageView(imageName: "background")
